@@ -1,0 +1,9 @@
+## LOCAL
+
+# DataSource
+spring:
+  datasource:
+    url: jdbc:mariadb://172.18.0.2:3306/DB?autoReconnect=true
+    username: root
+    password: qwer1234
+    driver-class-name: org.mariadb.jdbc.Driver
