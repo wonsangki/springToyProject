@@ -1,48 +1,47 @@
 package com.study.springstudy.entity.board;
 
-import com.study.springstudy.entity.auth.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Comment {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String title;
+    @Column(name = "post", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "COMMENT_ID")
+    private Post post;
 
-    private Long userId;
+    @Column(name = "", nullable = false)
+    private Long writerId;
 
+    @Column(name = "", nullable = false)
     private String contents;
 
+    @Column(name = "", nullable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    private Date createdTime;
 
+    @Column(name = "", nullable = false)
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
+    private Date modifiedTime;
 
-    @ManyToOne
-    @JoinColumn(name = "BOARD_ID")
-    private Board board;
 
-    @OneToMany(mappedBy = "post")
-    private List<Comment> commentList = new ArrayList<Comment>();
-
-    private Boolean isDeleted;
+    @Column(name = "", nullable = false)
+    private Boolean isDeleted = false;
 
     @Builder
-    public Post(String title, String contents, Boolean isDeleted){
-        this.title = title;
+    public Comment(String contents, Boolean isDeleted) {
         this.contents = contents;
         this.isDeleted = isDeleted;
     }

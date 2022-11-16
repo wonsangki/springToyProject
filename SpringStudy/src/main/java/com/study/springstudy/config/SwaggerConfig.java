@@ -29,24 +29,15 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        Parameter parameterBuilder = new ParameterBuilder()
-                .name(HttpHeaders.AUTHORIZATION)
-                .description("Access Tocken")
-                .modelRef(new ModelRef("string"))
-                .parameterType("header")
-                .required(false)
-                .build();
-
-        List<Parameter> globalParamters = new ArrayList<>();
-        globalParamters.add(parameterBuilder);
-
         return new Docket(DocumentationType.SWAGGER_2)
-                .globalOperationParameters(globalParamters)
-                .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.kjh.study.api"))
-                .paths(PathSelectors.any())
-                .build();
+                .apis(RequestHandlerSelectors.any()) // 특정 패키지경로를 API문서화 한다. 1차 필터
+                .paths(PathSelectors.any()) // apis중에서 특정 path조건 API만 문서화 하는 2차 필터
+                .build()
+                .groupName("API 1.0.0") // group별 명칭을 주어야 한다.
+                .pathMapping("/")
+                .apiInfo(apiInfo())
+                .useDefaultResponseMessages(false); // 400,404,500 .. 표기를 ui에서 삭제한다.
     }
 
     public ApiInfo apiInfo() {
@@ -54,7 +45,11 @@ public class SwaggerConfig {
                 .title(API_NAME)
                 .version(API_VERSION)
                 .description(API_DESCRIPTION)
-                .build();
+                .termsOfServiceUrl("")
+                .license("")
+                .licenseUrl("")
+                .build()
+                ;
     }
 
 }
